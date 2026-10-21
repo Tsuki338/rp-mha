@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="RP MHA — Réservation des personnages de My Hero Academia pour le roleplay VRChat.">
+<title>RP MHA — Réservation des personnages</title>
+<style>
+:root{
+  color-scheme:dark;--bg:#101010;--panel:#1a1a1a;--panel2:#242424;
+  --text:#f7f7f7;--muted:#b8b8b8;--red:#e32636;--red2:#ff4a55;
+  --green:#22c55e;--taken:#ef4444;--line:#393939;--gold:#e5c6c8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#48151a 0%,var(--bg) 48%);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+a{color:inherit}
+header{position:sticky;top:0;z-index:10;background:#111111ed;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px max(5%,calc((100% - 1180px)/2));display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,var(--red2),#9b111e);font-weight:1000;font-size:1.35rem;box-shadow:0 0 22px #e3263644}
+.brand-name{font-weight:900;letter-spacing:.12em;font-size:1.15rem}.brand-name span{color:var(--red2)}
+nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+nav a{text-decoration:none;color:var(--muted);font-size:.92rem}nav a:hover{color:white}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 17px;border-radius:10px;border:1px solid transparent;background:var(--red);color:white;font:inherit;font-weight:750;text-decoration:none;cursor:pointer;transition:transform .15s,background .15s}
+.button:hover{background:#c91d2c;transform:translateY(-1px)}
+.button.secondary{background:transparent;border-color:#555;color:var(--text)}.button.secondary:hover{border-color:var(--red2)}
+.hero{text-align:center;padding:82px 20px 55px;max-width:950px;margin:auto}
+.eyebrow{display:inline-block;color:#ff9ba2;border:1px solid #743139;background:#341619;padding:5px 12px;border-radius:999px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+.hero h1{font-size:clamp(2.7rem,7vw,5.6rem);line-height:.98;letter-spacing:-.045em;margin:22px 0 18px}
+.hero h1 span{color:var(--red2);text-shadow:0 0 35px #e3263633}
+.hero p{max-width:660px;margin:0 auto 27px;color:var(--muted);font-size:1.08rem}
+.hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.legend{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:28px;color:var(--muted);font-size:.9rem}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:middle}
+.dot.free{background:var(--green);box-shadow:0 0 10px #22c55e55}.dot.taken{background:var(--taken);box-shadow:0 0 10px #ef444455}
+main{max-width:1180px;margin:auto;padding:0 5% 70px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin:25px 0 18px}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);margin:0;line-height:1.2}.section-head p{margin:8px 0 0;color:var(--muted)}
+.stats{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}.stat{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:.88rem}
+.toolbar{display:grid;grid-template-columns:minmax(180px,1fr) 190px 190px;gap:10px;margin:18px 0 22px}
+input,select{width:100%;background:var(--panel);color:var(--text);border:1px solid #484848;border-radius:10px;padding:12px 13px;font:inherit;min-width:0}
+input:focus,select:focus{outline:2px solid #e3263677;border-color:var(--red2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:15px}
+.card{position:relative;overflow:hidden;background:linear-gradient(145deg,#202020,#171717);border:1px solid var(--line);border-radius:15px;padding:18px;display:flex;flex-direction:column;gap:11px;min-height:218px}
+.card:before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:#4b4b4b}.card.available:before{background:var(--green)}.card.reserved:before{background:var(--red)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.category{font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;color:#d0d0d0;font-weight:800}
+.status{white-space:nowrap;font-size:.82rem;color:var(--muted)}
+.card h3{margin:0;font-size:1.22rem;line-height:1.25}.quirk{color:#ff9ba2;font-size:.86rem;font-weight:650}.description{margin:0;color:var(--muted);font-size:.9rem}
+.owner{margin-top:auto;padding-top:4px;color:var(--muted);font-size:.84rem}
+.card .button{width:100%;margin-top:2px}.card .button:disabled{background:#303030;border-color:#424242;color:#9a9a9a;cursor:not-allowed;transform:none}
+.empty{grid-column:1/-1;padding:36px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px;margin-top:18px}
+.info{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:14px}.info .icon{font-size:1.5rem}.info h3{margin:7px 0}.info p{color:var(--muted);margin:0;font-size:.92rem}
+.discord-box{margin-top:55px;padding:clamp(24px,5vw,45px);text-align:center;border:1px solid #6a292f;border-radius:20px;background:linear-gradient(130deg,#321316,#1a1718 65%,#251313)}
+.discord-box h2{margin-bottom:12px}.discord-box p{color:var(--muted);max-width:610px;margin:0 auto 22px}
+.notice{margin-top:22px;border:1px solid #66512b;background:#2b2418;color:#f4dfaa;padding:15px 17px;border-radius:12px;font-size:.88rem}
+footer{border-top:1px solid var(--line);padding:25px 5%;text-align:center;color:var(--muted);font-size:.84rem}
+@media(max-width:700px){header{position:static;padding:14px 5%}nav{gap:12px}.toolbar{grid-template-columns:1fr}.hero{padding-top:55px}.section-head{align-items:start}}
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="#accueil" aria-label="RP MHA, accueil">
+    <div class="logo">M</div>
+    <div class="brand-name">RP <span>MHA</span></div>
+  </a>
+  <nav aria-label="Navigation principale">
+    <a href="#personnages">Personnages</a>
+    <a href="#fonctionnement">Fonctionnement</a>
+    <a href="#discord">Discord</a>
+  </nav>
+</header>
+
+<section class="hero" id="accueil">
+  <span class="eyebrow">VRChat · My Hero Academia RP</span>
+  <h1>TON RÔLE.<br><span>TON HISTOIRE.</span></h1>
+  <p>Retrouve les personnages disponibles pour notre roleplay My Hero Academia. Vérifie leur statut avant de contacter le staff pour ta réservation.</p>
+  <div class="hero-actions">
+    <a class="button" href="#personnages">Voir les personnages ↓</a>
+    <a class="button secondary" id="heroDiscord" href="#discord">Rejoindre le Discord ↗</a>
+  </div>
+  <div class="legend"><span><i class="dot free"></i>Libre</span><span><i class="dot taken"></i>Pris</span></div>
+</section>
+
+<main>
+  <section id="personnages">
+    <div class="section-head">
+      <div><h2>Réservation des personnages</h2><p>Recherche un nom ou filtre par rôle et disponibilité.</p></div>
+    </div>
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="🔎 Rechercher un personnage…" aria-label="Rechercher un personnage">
+      <select id="category" aria-label="Filtrer par catégorie">
+        <option value="Tous">Tous les rôles</option><option>Élèves</option><option>Héros</option><option>Vilains</option>
+      </select>
+      <select id="availability" aria-label="Filtrer par disponibilité">
+        <option value="Tous">Toutes les disponibilités</option><option value="Libre">Personnages libres</option><option value="Pris">Personnages pris</option>
+      </select>
+    </div>
+    <div class="grid" id="characters" aria-live="polite"></div>
+    <div class="notice"><strong>À savoir :</strong> cette version est une vitrine de démonstration. Les statuts affichés sont à tenir à jour par le staff. Les demandes de réservation passent par le Discord ; ce site ne synchronise pas encore les réservations entre les visiteurs.</div>
+  </section>
+
+  <section id="fonctionnement" style="padding-top:55px">
+    <div class="section-head"><div><h2>Comment réserver ?</h2><p>Un système simple pour garder les rôles organisés.</p></div></div>
+    <div class="info-grid">
+      <article class="info"><div class="icon">🟢</div><h3>1. Vérifie le statut</h3><p>Le point vert indique qu'un personnage est affiché comme libre ; le rouge signifie qu'il est déjà pris.</p></article>
+      <article class="info"><div class="icon">💬</div><h3>2. Contacte le staff</h3><p>Utilise le bouton de demande et indique le personnage souhaité sur le serveur Discord.</p></article>
+      <article class="info"><div class="icon">🔴</div><h3>3. Confirmation</h3><p>Le staff confirme la réservation et met à jour la liste des personnages sur le site.</p></article>
+    </div>
+  </section>
+
+  <section class="discord-box" id="discord">
+    <h2>Prêt à entrer dans l'histoire ?</h2>
+    <p>Rejoins le Discord du serveur RP MHA pour consulter les règles, rencontrer le staff et demander la réservation de ton personnage.</p>
+    <a class="button" id="discordButton" href="https://discord.com/" target="_blank" rel="noopener noreferrer">Rejoindre le Discord ↗</a>
+    <p style="font-size:.78rem;margin:13px auto 0">Pense à remplacer le lien par l'invitation officielle de ton serveur.</p>
+  </section>
+</main>
+<footer>© <span id="year"></span> RP MHA · Site communautaire non officiel, sans affiliation avec les créateurs de My Hero Academia.</footer>
+
+<script>
+/* PERSONNALISATION :
+   1) Remplace le lien discordInvite ci-dessous par l'invitation de ton serveur.
+   2) Dans la liste personnages, libre:true = vert ; libre:false = rouge.
+   3) Remplace joueur par le pseudo du membre si le personnage est pris.
+*/
+const discordInvite = "https://discord.gg/kv4N4ZsdmZ"; // Invitation officielle du serveur RP MHA
+
+const personnages = [
+  // Classe 1-A de Yuei
+  {nom:"Izuku Midoriya",categorie:"Élèves",alter:"One For All",libre:true,joueur:"",description:"Élève de Yuei, déterminé à devenir un grand héros."},
+  {nom:"Katsuki Bakugo",categorie:"Élèves",alter:"Explosion",libre:true,joueur:"",description:"Élève explosif, compétitif et ambitieux."},
+  {nom:"Shoto Todoroki",categorie:"Élèves",alter:"Glace et feu",libre:true,joueur:"",description:"Élève de Yuei qui maîtrise deux éléments."},
+  {nom:"Ochaco Uraraka",categorie:"Élèves",alter:"Zéro gravité",libre:true,joueur:"",description:"Élève courageuse au grand cœur."},
+  {nom:"Tenya Iida",categorie:"Élèves",alter:"Moteur",libre:true,joueur:"",description:"Élève sérieux, discipliné et rapide."},
+  {nom:"Tsuyu Asui",categorie:"Élèves",alter:"Grenouille",libre:true,joueur:"",description:"Élève calme avec des capacités de grenouille."},
+  {nom:"Minoru Mineta",categorie:"Élèves",alter:"Balles collantes",libre:true,joueur:"",description:"Élève capable de lancer des sphères collantes."},
+  {nom:"Eijiro Kirishima",categorie:"Élèves",alter:"Durcissement",libre:true,joueur:"",description:"Élève loyal qui valorise le courage."},
+  {nom:"Momo Yaoyorozu",categorie:"Élèves",alter:"Création",libre:true,joueur:"",description:"Élève stratège et inventive."},
+  {nom:"Denki Kaminari",categorie:"Élèves",alter:"Électrification",libre:true,joueur:"",description:"Élève énergique qui maîtrise l'électricité."},
+  {nom:"Kyoka Jiro",categorie:"Élèves",alter:"Earphone Jack",libre:true,joueur:"",description:"Élève musicienne qui utilise ses prises auditives."},
+  {nom:"Fumikage Tokoyami",categorie:"Élèves",alter:"Dark Shadow",libre:true,joueur:"",description:"Élève accompagné d'une ombre vivante."},
+  {nom:"Mina Ashido",categorie:"Élèves",alter:"Acide",libre:true,joueur:"",description:"Élève dynamique qui produit de l'acide."},
+  {nom:"Yuga Aoyama",categorie:"Élèves",alter:"Laser du nombril",libre:true,joueur:"",description:"Élève extravagant qui tire un laser."},
+  {nom:"Mashirao Ojiro",categorie:"Élèves",alter:"Queue",libre:true,joueur:"",description:"Élève spécialiste des arts martiaux, doté d'une queue."},
+  {nom:"Mezo Shoji",categorie:"Élèves",alter:"Dupli-bras",libre:true,joueur:"",description:"Élève capable de reproduire des organes sur ses tentacules."},
+  {nom:"Hanta Sero",categorie:"Élèves",alter:"Ruban adhésif",libre:true,joueur:"",description:"Élève qui projette du ruban depuis ses coudes."},
+  {nom:"Rikido Sato",categorie:"Élèves",alter:"Sugar Dope",libre:true,joueur:"",description:"Élève dont la force augmente avec le sucre."},
+  {nom:"Toru Hagakure",categorie:"Élèves",alter:"Invisibilité",libre:true,joueur:"",description:"Élève qui peut devenir invisible."},
+  {nom:"Koji Koda",categorie:"Élèves",alter:"Anivoix",libre:true,joueur:"",description:"Élève capable de communiquer avec les animaux."},
+  // Les Big Three de Yuei
+  {nom:"Mirio Togata",categorie:"Élèves",alter:"Perméation",libre:true,joueur:"",description:"Élève de troisième année, membre des Big Three."},
+  {nom:"Nejire Hado",categorie:"Élèves",alter:"Vague d'énergie",libre:true,joueur:"",description:"Élève de troisième année, membre des Big Three."},
+  {nom:"Tamaki Amajiki",categorie:"Élèves",alter:"Manifestation",libre:true,joueur:"",description:"Élève de troisième année, membre des Big Three."},
+  // Héros
+  {nom:"All Might",categorie:"Héros",alter:"One For All",libre:true,joueur:"",description:"Le légendaire Symbole de la paix."},
+  {nom:"Shota Aizawa",categorie:"Héros",alter:"Effacement",libre:true,joueur:"",description:"Professeur de Yuei et héros pragmatique."},
+  {nom:"Endeavor",categorie:"Héros",alter:"Hellflame",libre:true,joueur:"",description:"Héros professionnel qui maîtrise les flammes."},
+  {nom:"Hawks",categorie:"Héros",alter:"Ailes féroces",libre:true,joueur:"",description:"Héros rapide doté d'ailes rouges."},
+  {nom:"Best Jeanist",categorie:"Héros",alter:"Maître des fibres",libre:true,joueur:"",description:"Héros professionnel élégant et méthodique."},
+  // Vilains
+  {nom:"Tomura Shigaraki",categorie:"Vilains",alter:"Désintégration",libre:true,joueur:"",description:"Figure majeure de la Ligue des vilains."},
+  {nom:"Dabi",categorie:"Vilains",alter:"Flammes bleues",libre:true,joueur:"",description:"Vilain mystérieux qui utilise des flammes bleues."},
+  {nom:"Himiko Toga",categorie:"Vilains",alter:"Métamorphose",libre:true,joueur:"",description:"Vilain capable de prendre l'apparence d'autrui."},
+  {nom:"Twice",categorie:"Vilains",alter:"Double",libre:true,joueur:"",description:"Vilain capable de créer des doubles."},
+  {nom:"Mr. Compress",categorie:"Vilains",alter:"Compression",libre:true,joueur:"",description:"Vilain connu pour ses tours et ses billes."}
+];
+
+const $ = id => document.getElementById(id);
+function updateDiscordLinks(){
+  ["heroDiscord","discordButton"].forEach(id => {
+    const link = $(id);
+    link.href = discordInvite;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  });
+}
+function render(){
+  const query = $("search").value.trim().toLocaleLowerCase("fr");
+  const category = $("category").value;
+  const availability = $("availability").value;
+  const visible = personnages.filter(p =>
+    (p.nom.toLocaleLowerCase("fr").includes(query) || p.alter.toLocaleLowerCase("fr").includes(query)) &&
+    (category === "Tous" || p.categorie === category) &&
+    (availability === "Tous" || (availability === "Libre" && p.libre) || (availability === "Pris" && !p.libre))
+  );
+  const freeCount = personnages.filter(p => p.libre).length;
+  $("stats").innerHTML = `<span class="stat">Total : ${personnages.length}</span><span class="stat"><i class="dot free"></i>Libres : ${freeCount}</span><span class="stat"><i class="dot taken"></i>Pris : ${personnages.length-freeCount}</span>`;
+  const grid = $("characters");
+  grid.replaceChildren();
+  if (!visible.length) {
+    const empty = document.createElement("div"); empty.className = "empty"; empty.textContent = "Aucun personnage trouvé. Essaie une autre recherche."; grid.append(empty); return;
+  }
+  visible.forEach(p => {
+    const card = document.createElement("article"); card.className = "card " + (p.libre ? "available" : "reserved");
+    const top = document.createElement("div"); top.className = "card-top";
+    const cat = document.createElement("span"); cat.className = "category"; cat.textContent = p.categorie;
+    const status = document.createElement("span"); status.className = "status";
+    const dot = document.createElement("i"); dot.className = "dot " + (p.libre ? "free" : "taken");
+    status.append(dot, document.createTextNode(p.libre ? "Libre" : "Pris")); top.append(cat,status);
+    const title = document.createElement("h3"); title.textContent = p.nom;
+    const quirk = document.createElement("div"); quirk.className = "quirk"; quirk.textContent = "Alter : " + p.alter;
+    const desc = document.createElement("p"); desc.className = "description"; desc.textContent = p.description;
+    const owner = document.createElement("div"); owner.className = "owner"; owner.textContent = p.libre ? "Aucun joueur indiqué" : "Réservé par : " + (p.joueur || "pseudo à confirmer");
+    const button = document.createElement("a"); button.className = "button"; button.textContent = p.libre ? "Demander ce personnage" : "Personnage déjà pris";
+    if (p.libre) {
+      button.href = discordInvite; button.target = "_blank"; button.rel = "noopener noreferrer";
+      button.addEventListener("click", () => {});
+    } else {
+      button.href = "#discord"; button.classList.add("secondary");
+      button.addEventListener("click", e => { e.preventDefault(); alert("Ce personnage est affiché comme réservé. Contacte le staff sur Discord si tu as une question."); });
+    }
+    card.append(top,title,quirk,desc,owner,button); grid.append(card);
+  });
+}
+$("search").addEventListener("input",render);
+$("category").addEventListener("change",render);
+$("availability").addEventListener("change",render);
+$("year").textContent = new Date().getFullYear();
+updateDiscordLinks(); render();
+</script>
+</body>
+</html>
